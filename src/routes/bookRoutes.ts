@@ -1,10 +1,10 @@
 import express from 'express';
-import { createBook, getBooks } from '../controllers/bookController';
-import { authorize } from '../middlewares/authMiddleware'; // Middleware for auth
+import { createBook, getBookDetails, getBooks } from '../controllers/bookController';
 
 const router = express.Router();
 
-router.post('/createBook', authorize(['admin']), createBook);
+router.post('/createBook', createBook);
 router.get('/getBooks', getBooks);
+router.post('/getBookDetails', getBookDetails)
 
 export default router;

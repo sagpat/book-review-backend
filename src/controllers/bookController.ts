@@ -1,18 +1,47 @@
 import { Request, Response } from 'express';
 import Book from '../models/book';
+import path from 'path'
 
+// Create a new book
 export const createBook = async (req: Request, res: Response) => {
   try {
-    const book = await Book.create(req.body);
-    res.status(201).json(book);
+    const { title, author, description, publicationDate, rating, bookCover } = req.body;
+
+    if (!bookCover) {
+      return res.status(400).json({ error: 'Cover image is required' });
+    }
+
+    // Save book data
+    const book = await Book.create({
+      title,
+      author,
+      description,
+      publicationDate,
+      overallRating: Number(rating),
+      bookCover,
+    });
+
+    res.status(201).json({status: "success"});
+  } catch (error) {
+    res.status(500).json({ error: 'Failed to create the book' });
+  }
+};
+
+
+export const getBooks = async (req: Request, res: Response) => {
+  try {
+    const books = await Book.findAll();
+    res.json(books);
   } catch (error: any) {
     res.status(500).json({ message: error.message });
   }
 };
 
-export const getBooks = async (req: Request, res: Response) => {
+
+export const getBookDetails = async (req: Request, res: Response) => {
+  const id = req.body.bookId;
   try {
-    const books = await Book.findAll();
+    const books = await Book.findOne({ where: { id }});
     res.json(books);
   } catch (error: any) {
     res.status(500).json({ message: error.message });

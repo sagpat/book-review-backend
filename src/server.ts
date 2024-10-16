@@ -7,21 +7,33 @@ import authRoutes from "./routes/authRoutes";
 import bookRoutes from "./routes/bookRoutes";
 import reviewRoutes from "./routes/reviewRoutes";
 import { checkApiKey } from "./middlewares/apikeyValidationMiddleware";
+import { authorize } from "./middlewares/authMiddleware";
 
 dotenv.config();
 
 const app = express();
 const PORT = process.env.PORT || 3000;
+const corsOptions ={
+  origin:'*', 
+  credentials:true, //access-control-allow-credentials:true
+  optionSuccessStatus:200,
+}
 
 // Middleware
+app.use(cors(corsOptions))
 app.use(checkApiKey);
-app.use(cors());
-app.use(bodyParser.json());
+
+app.use(bodyParser.json({limit: '10mb'}));
 
 // Routes
+
+// TODO: to add middleware to verify user type.
+// currently relying on the user "role" param.
 app.use("/api/auth", authRoutes);
-app.use("/api/books", bookRoutes);
-app.use("/api/reviews", reviewRoutes);
+
+// adding jwt validation after initial auth calls.
+app.use("/api/books", authorize,  bookRoutes);
+app.use("/api/reviews", authorize, reviewRoutes);
 
 // Sync database and start server
 sequelize
