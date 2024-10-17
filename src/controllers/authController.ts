@@ -5,7 +5,7 @@ import User from "../models/user";
 import dotenv from "dotenv";
 dotenv.config();
 
-export const register = async (req: Request, res: Response) => {
+export const register = async (req: any, res: any) => {
   try {
     const { username, password, role, email } = req.body;
     const hashedPassword = await bcrypt.hash(password, 10);
