@@ -3,7 +3,7 @@ import Book from '../models/book';
 import path from 'path'
 
 // Create a new book
-export const createBook = async (req: Request, res: Response) => {
+export const createBook = async (req: any, res: any) => {
   try {
     const { title, author, description, publicationDate, rating, bookCover } = req.body;
 

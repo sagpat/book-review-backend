@@ -3,8 +3,8 @@ import CryptoJS from "crypto-js";
 
 // Middleware to verify the API key
 export const checkApiKey = (
-  req: Request,
-  res: Response,
+  req: any,
+  res: any,
   next: NextFunction
 ) => {
   const encryptedAPIKey: string = req.headers["x-api-key"] as string || '';

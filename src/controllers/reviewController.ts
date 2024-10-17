@@ -70,7 +70,7 @@ export const getUserReviews = async (req: Request, res: Response) => {
 };
 
 
-export const editReview = async (req: Request, res: Response) => {
+export const editReview = async (req: any, res: any) => {
   try {
     const { reviewText, rating, id } = req.body;
     const reviewId = req.params.reviewId;
@@ -92,7 +92,7 @@ export const editReview = async (req: Request, res: Response) => {
 };
 
 // Delete a review
-export const deleteReview = async (req: Request, res: Response) => {
+export const deleteReview = async (req: any, res: any) => {
   try {
     const { id } = req.body;
     const reviewId = req.params.reviewId;

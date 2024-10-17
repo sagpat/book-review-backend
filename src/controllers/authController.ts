@@ -9,6 +9,9 @@ export const register = async (req: Request, res: Response) => {
   try {
     const { username, password, role, email } = req.body;
     const hashedPassword = await bcrypt.hash(password, 10);
+    if (role === "admin") {
+      return res.status(400).json({ message: "Invalid role" });  // not allowed to create admin role through the portal
+    }
     const user = await User.create({
       username,
       password: hashedPassword,
@@ -24,7 +27,7 @@ export const register = async (req: Request, res: Response) => {
   }
 };
 
-export const login = async (req: Request, res: Response) => {
+export const login = async (req: any, res: any) => {
   try {
     const { username, password } = req.body;
     const user = await User.findOne({ where: { username } });
@@ -37,7 +40,9 @@ export const login = async (req: Request, res: Response) => {
       process.env.JWT_SECRET as string,
       { expiresIn: "1h" }
     );
-    res.json({
+    res
+    .status(201)
+    .json({
       token,
       loggedinUserName: user.username,
       id: user.id,

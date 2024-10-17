@@ -4,7 +4,7 @@ import jwt from 'jsonwebtoken';
 import dotenv from 'dotenv';
 dotenv.config();
 
-export const authorize = (req: Request, res: Response, next: NextFunction) => {
+export const authorize = (req: any, res: any, next: NextFunction) => {
   console.log('here::::');
   
   const authHeader = req.headers['authorization'];
